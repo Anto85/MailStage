@@ -6,6 +6,8 @@ from email.mime.application import MIMEApplication
 from email.encoders import encode_base64
 import ollama
 import re
+import time
+import requests
 
 
 def envoyer_email(destinataire, sujet, expediteur, username, mot_de_passe, company):
@@ -26,6 +28,8 @@ def envoyer_email(destinataire, sujet, expediteur, username, mot_de_passe, compa
     
     message.attach(contenu())
 
+    suspendre_programme()
+    
     # Établir une connexion avec le serveur SMTP de Gmail
     serveur_smtp = smtplib.SMTP('smtp.gmail.com', 587)
     serveur_smtp.starttls()
@@ -84,7 +88,7 @@ def contenu():
     return contenu
 
 def prompt(name, company):
-    text = "My name is Antonin Urbain, my email is anto.urbain@gmail.com and my phone numbers is 07 83 19 45 78. I am a fast learner and i like programmation and new technology.I am actually in first year of ingeneering at ESEO, i am looking for an internship for 4 month from mid july to november. don't write any subject in the mail. The mail reader is named "+name+". The mail should be formal and polite. and i want to make them know that i know their company named" + company 
+    text = "My name is Antonin Urbain, my email is anto.urbain@gmail.com and my phone numbers is 07 83 19 45 78,my contact information have to be only at the end of the mail. Dont add any other Email address in the text of the mail I am a fast learner and i like programmation and new technology.I am actually in first year of ingeneering at ESEO (electronic and informatic school), i am looking for an internship for 4 month from mid july to november. don't write any subject in the mail. The mail reader is named:" + name + ". The mail should be formal and polite. and i want to make them know that i know their company named" + company + "first, i present my self, then i show my motivation for the company, and i talk about my skills and my experiences." 
     return text
 
 def extract(output):
@@ -96,5 +100,16 @@ def generation_ollama(prompt):
     client = ollama.Client()
     output = client.generate('mistral', prompt)
     return (extract(output))
+def suspendre_programme():
+    while True:
+        try:
+            # Vérifier la connexion internet en effectuant une requête simple
+            response = requests.get('https://www.google.com')
+            if response.status_code == 200:
+                break  # Sortir de la boucle si la requête réussit
+        except requests.exceptions.RequestException:
+            pass  # Ignorer les erreurs de connexion
 
+        # Attendre pendant 1 seconde avant de réessayer
+        time.sleep(1)
 envoyer_email_classeur()
