@@ -7,7 +7,7 @@ from email.encoders import encode_base64
 import ollama
 import re
 import time
-import requests
+import subprocess
 
 
 def envoyer_email(destinataire, sujet, expediteur, username, mot_de_passe, company):
@@ -22,6 +22,8 @@ def envoyer_email(destinataire, sujet, expediteur, username, mot_de_passe, compa
     subject = subject.group(1).strip()
     message['Subject'] = subject
     text = re.sub(r"Subject:(.*)", "", text)
+    text = re.sub(r"\n\n", "", text,1)
+
 
     # Ajouter le contenu du message
     message.attach(MIMEText(text, 'plain'))
@@ -88,7 +90,7 @@ def contenu():
     return contenu
 
 def prompt(name, company):
-    text = "My name is Antonin Urbain, my email is anto.urbain@gmail.com and my phone numbers is 07 83 19 45 78,my contact information have to be only at the end of the mail. Dont add any other Email address in the text of the mail I am a fast learner and i like programmation and new technology.I am actually in first year of ingeneering at ESEO (electronic and informatic school), i am looking for an internship for 4 month from mid july to november. don't write any subject in the mail. The mail reader is named:" + name + ". The mail should be formal and polite. and i want to make them know that i know their company named" + company + "first, i present my self, then i show my motivation for the company, and i talk about my skills and my experiences." 
+    text = "I am a fast learner and i like programmation and new technology.I am actually in first year of ingeneering at ESEO (school of electronic and informatic), i am looking for an internship of 4 month from mid july to november. The mail reader is named:" + name + ". The mail should be formal and polite. and i want to make them know that i know their company named" + company + "first, i present my self but i don't give my contact information, then i show my motivation for the company, and i talk about my skills and my experiences just, make a sentence to tell that you have send your resume in as an attached file after this i sign my mail with my contact information : My name is Antonin Urbain, my email is anto.urbain@gmail.com and my phone numbers is 07 83 19 45 78." 
     return text
 
 def extract(output):
@@ -103,12 +105,17 @@ def generation_ollama(prompt):
 def suspendre_programme():
     while True:
         try:
-            # Vérifier la connexion internet en effectuant une requête simple
-            response = requests.get('https://www.google.com')
-            if response.status_code == 200:
-                break  # Sortir de la boucle si la requête réussit
-        except requests.exceptions.RequestException:
-            pass  # Ignorer les erreurs de connexion
+            # Vérifier la connexion internet en effectuant un ping vers google.com
+            ping_result = subprocess.run(['ping', '-n', '1', 'google.com'], capture_output=True)
+            try:
+                ping_time = int(ping_result.stdout.decode('utf-8').split('time=')[1].split('ms')[0].strip())
+            except UnicodeDecodeError:
+                # Handle the UnicodeDecodeError here
+                ping_time = 0  # Set a default value or handle the error in a different way
+            if ping_time < 200:
+                break  # Sortir de la boucle si le ping est inférieur à 200 ms
+        except subprocess.CalledProcessError:
+            pass  # Ignorer les erreurs de ping
 
         # Attendre pendant 1 seconde avant de réessayer
         time.sleep(1)
