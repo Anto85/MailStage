@@ -6,6 +6,5 @@ def extract(output):
     return text
 
 client = ollama.Client()
-output = client.generate('mistral', "Tell me a joke")
-print(output)
+output = client.generate('mistral', "Tell me a joke in french")
 print(extract(output))
