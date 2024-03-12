@@ -75,16 +75,16 @@ def contenu():
     contenu = MIMEMultipart()
 
     # Créer les objets MIMEApplication pour les fichiers PDF
-    with open("ANTONIN URBAIN.pdf", "rb") as opened:
-        openedfile = opened.read()
+    #with open("ANTONIN URBAIN.pdf", "rb") as opened:
+        #openedfile = opened.read()
     with open("Copie de ANTONIN URBAIN.pdf", "rb") as opened2:
         openedfile2 = opened2.read()
     
-    attachedfile = MIMEApplication(openedfile, _subtype="pdf", _encoder=encode_base64)
+    #attachedfile = MIMEApplication(openedfile, _subtype="pdf", _encoder=encode_base64)
     attachedfile2 = MIMEApplication(openedfile2, _subtype="pdf", _encoder=encode_base64)
-    attachedfile.add_header('content-disposition', 'attachment', filename="ANTONIN URBAIN.pdf")
+    #attachedfile.add_header('content-disposition', 'attachment', filename="ANTONIN URBAIN.pdf")
     attachedfile2.add_header('content-disposition', 'attachment', filename="ANTONIN URBAIN EN.pdf")
-    contenu.attach(attachedfile)
+    #contenu.attach(attachedfile)
     contenu.attach(attachedfile2)
     
     return contenu
