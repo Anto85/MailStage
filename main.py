@@ -46,7 +46,7 @@ def envoyer_email(destinataire, sujet, expediteur, username, mot_de_passe, compa
     serveur_smtp.quit()
     
 def envoyer_email_classeur():
-    # Ouvrir le fichier Classeur1.xlsx
+    # Ouvrir le fichier de contact en .xlsx
     classeur = openpyxl.load_workbook('Classeur1.xlsx')
     feuille = classeur.active
 
@@ -68,29 +68,29 @@ def envoyer_email_classeur():
         # Appeler la fonction envoyer_email avec les paramètres appropriés
         destination = 'candidature stage ' + nom[adresse_mail.index(i)]
         company = entreprise[adresse_mail.index(i)]
-        envoyer_email(i, destination,"Antonin Urbain", "anto.urbain@gmail.com", 'hhcj pxns haim adya', company)
+        envoyer_email(i, destination,"Yourname", "YourEmail", 'yourpassword', company)
 
 def contenu():
     # Créer un objet MIMEMultipart pour le contenu du message
     contenu = MIMEMultipart()
 
     # Créer les objets MIMEApplication pour les fichiers PDF
-    #with open("ANTONIN URBAIN.pdf", "rb") as opened:
+    #with open("Yourname.pdf", "rb") as opened:
         #openedfile = opened.read()
-    with open("Copie de ANTONIN URBAIN.pdf", "rb") as opened2:
+    with open("Copie de Yourname.pdf", "rb") as opened2:
         openedfile2 = opened2.read()
     
     #attachedfile = MIMEApplication(openedfile, _subtype="pdf", _encoder=encode_base64)
     attachedfile2 = MIMEApplication(openedfile2, _subtype="pdf", _encoder=encode_base64)
-    #attachedfile.add_header('content-disposition', 'attachment', filename="ANTONIN URBAIN.pdf")
-    attachedfile2.add_header('content-disposition', 'attachment', filename="ANTONIN URBAIN EN.pdf")
+    #attachedfile.add_header('content-disposition', 'attachment', filename="Yourname.pdf")
+    attachedfile2.add_header('content-disposition', 'attachment', filename="Yourname EN.pdf")
     #contenu.attach(attachedfile)
     contenu.attach(attachedfile2)
     
     return contenu
 
 def prompt(name, company):
-    text = "I am a fast learner and i like programmation and new technology.I am actually in first year of ingeneering at ESEO (school of electronic and informatic), i am looking for an internship of 4 month from mid july to november. The mail reader is named:" + name + ". The mail should be formal and polite. and i want to make them know that i know their company named" + company + "first, i present my self but i don't give my contact information, then i show my motivation for the company, and i talk about my skills and my experiences just, make a sentence to tell that you have send your resume in as an attached file after this i sign my mail with my contact information : My name is Antonin Urbain, my email is anto.urbain@gmail.com and my phone numbers is 07 83 19 45 78." 
+    text = "" # Ajout de la prompt de recherche de stage 
     return text
 
 def extract(output):
